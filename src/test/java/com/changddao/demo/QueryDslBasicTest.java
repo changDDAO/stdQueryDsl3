@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.changddao.demo.entity.QMember.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -20,9 +22,11 @@ import static org.assertj.core.api.Assertions.*;
 public class QueryDslBasicTest {
     @PersistenceContext
     EntityManager em;
+    JPAQueryFactory queryFactory;
 
     @BeforeEach
     public void before(){
+        queryFactory = new JPAQueryFactory(em);
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
         em.persist(teamA);
@@ -60,7 +64,7 @@ public class QueryDslBasicTest {
     @Test
     public void startQueryDsl(){
     //given
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
         Member findMember = queryFactory.selectFrom(member)
                 .where(member.username.eq("member1"))
                 .fetchOne();
@@ -68,6 +72,23 @@ public class QueryDslBasicTest {
 
         //when
         assertThat(findMember.getUsername()).isEqualTo("member1");
+
+
+
+    //then
+
+
+    }
+    @Test
+    public void search(){
+    //given
+        List<Member> findByCase = queryFactory.selectFrom(member)
+                .where(member.age.lt(20))
+                .fetch();
+
+
+        //when
+        assertThat(findByCase.get(0).getUsername()).isEqualTo("member1");
 
 
 
