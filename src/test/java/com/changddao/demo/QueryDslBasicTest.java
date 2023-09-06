@@ -412,5 +412,22 @@ public class QueryDslBasicTest {
         return usernameCond==null? null: member.username.eq(usernameCond);
     }
 
+    @Test
+    public void bulkUpdate(){
+    //given
+        long count = queryFactory.update(member)
+                .set(member.age, member.age.add(1))
+                .execute();
+
+
+        //when
+
+
+
+    //then
+
+
+    }
+
 
 }
