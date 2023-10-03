@@ -15,14 +15,12 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.PersistenceUnit;
+import jakarta.persistence.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -413,14 +411,27 @@ public class QueryDslBasicTest {
     }
 
     @Test
+    @Commit
     public void bulkUpdate(){
     //given
         long count = queryFactory.update(member)
-                .set(member.age, member.age.add(1))
+                .set(member.username,"비회원")
+                .where(member.age.lt(28))
                 .execute();
+
+        em.flush();
+        em.clear();
 
 
         //when
+        List<Member> result = queryFactory.selectFrom(member)
+                .fetch();
+
+        for (Member member1 : result) {
+            System.out.println(member1);
+        }
+
+    }
 
 
 
@@ -430,4 +441,4 @@ public class QueryDslBasicTest {
     }
 
 
-}
+
