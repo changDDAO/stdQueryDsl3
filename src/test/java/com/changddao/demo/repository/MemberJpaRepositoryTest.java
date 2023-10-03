@@ -12,6 +12,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,9 @@ class MemberJpaRepositoryTest {
     EntityManager em;
     @Autowired
     MemberJpaRepository jpaRepository;
+    @Autowired
+    @Qualifier("memberRepository")
+    private MemberRepositoryCustom memberRepository;
 
     @Test
     public void searchTest(){
@@ -51,7 +55,7 @@ class MemberJpaRepositoryTest {
         searchCondition.setAgeLoe(40);
         searchCondition.setTeamName("teamB");
 
-        List<MemberTeamDto> result = jpaRepository.searchbyBuilder(searchCondition);
+        List<MemberTeamDto> result = memberRepository.search(searchCondition);
 
 
         //then
