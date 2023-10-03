@@ -11,9 +11,9 @@ public class QueryDsl3Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(QueryDsl3Application.class, args);}
-	@Bean
+	/*@Bean
 	JPAQueryFactory jpaQueryFactory(EntityManager em){
 		return new JPAQueryFactory(em);
-	}
+	}*/
 
 }

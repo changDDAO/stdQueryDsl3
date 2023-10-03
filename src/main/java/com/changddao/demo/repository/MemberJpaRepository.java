@@ -20,10 +20,12 @@ import static com.changddao.demo.entity.QTeam.*;
 import static org.springframework.util.StringUtils.*;
 
 @Repository
-@RequiredArgsConstructor
 public class MemberJpaRepository {
-    private final EntityManager em;
-    private final JPAQueryFactory queryFactory;
+    private JPAQueryFactory queryFactory;
+
+    public MemberJpaRepository(EntityManager em){
+        this.queryFactory = new JPAQueryFactory(em);
+    }
 
 
     public List<MemberTeamDto> searchbyBuilder(MemberSearchCondition condition) {
